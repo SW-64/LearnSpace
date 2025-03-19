@@ -1,0 +1,21 @@
+{
+  "name": "LearnSpace",
+  "version": "1.0.0",
+  "main": "src/app.js",
+  "repository": "https://github.com/SW-64/LearnSpace.git",
+  "author": "gil-hyeon <lgh5498@naver.com>",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9",
+    "prettier": "^3.5.3"
+  }
+}

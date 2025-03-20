@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int @id @default(autoincrement())
+  email     String @unique
+  password  String 
+  name      String
+  role      UserRole @default(STUDENT)
+  subject   String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  teachers   Teacher?
+  students   Student?
+
+  @@map("users")
+}
+
+model Teacher {
+  teacherId   Int @id @default(autoincrement()) @map("teacher_id")
+  userId      Int @map("user_id") @unique
+  subject     String
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  user        User @relation(fields: [userId], references: [id])
+  class       Class[]
+
+  @@map("teachers")
+}
+
+model Student {
+  studentId   Int @id @default(autoincrement()) @map("student_id")
+  userId      Int @map("user_id") @unique
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  user        User @relation(fields: [userId], references: [id])
+  class       Class[]
+
+  @@map("students")
+}
+
+model Class { 
+  classId   Int @id @default(autoincrement()) @map("class_id")
+  studentId Int @map("user_id")
+  teacherId Int @map("teacher_id ")
+  subject   String
+  createdAt DateTime @default(now()) @map("created_at")
+  student   Student @relation(fields: [studentId], references: [studentId])
+  teacher   Teacher @relation(fields: [teacherId], references: [teacherId])
+
+  attendance  Attendance[]
+
+  @@map("class")
+}
+
+model Attendance {
+  attendanceId  Int @id @default(autoincrement()) @map("attendance_id")
+  classId     Int @map("class_id")
+  todayDate   DateTime @map("today_date")
+  state       AttendanceState @default(ATTENDANCE)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  class       Class @relation(fields: [classId], references: [classId])
+
+  @@map("attendance")
+}
+
+enum UserRole {
+  TEACHER
+  STUDENT
+}
+
+enum AttendanceState {
+  ATTENDANCE
+  LATE
+  DEFER
+}

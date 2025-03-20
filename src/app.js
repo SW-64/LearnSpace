@@ -1,6 +1,8 @@
 import express from 'express';
 import 'dotenv/config';
-import { globalErrorHandler } from './middlewares/error-handler.middleware';
+import cors from 'cors';
+import { globalErrorHandler } from './middlewares/error-handler.middleware.js';
+import './utils/prisma.utils.js';
 
 const app = express();
 const port = process.env.SERVER_PORT;

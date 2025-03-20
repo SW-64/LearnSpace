@@ -22,8 +22,8 @@ model User {
   subject   String
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  teachers   Teacher?
-  students   Student?
+  teacher   Teacher?
+  student   Student?
 
   @@map("users")
 }
@@ -53,8 +53,8 @@ model Student {
 
 model Class { 
   classId   Int @id @default(autoincrement()) @map("class_id")
-  studentId Int @map("user_id")
-  teacherId Int @map("teacher_id ")
+  studentId Int @map("student_id")
+  teacherId Int @map("teacher_id")
   subject   String
   createdAt DateTime @default(now()) @map("created_at")
   student   Student @relation(fields: [studentId], references: [studentId])

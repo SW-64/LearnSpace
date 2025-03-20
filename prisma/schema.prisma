@@ -1,0 +1,150 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  role      UserRole @default(STUDENT)
+  subject   String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  teacher   Teacher?
+  student   Student?
+
+  @@map("users")
+}
+
+model Teacher {
+  teacherId Int      @id @default(autoincrement()) @map("teacher_id")
+  userId    Int      @unique @map("user_id")
+  subject   String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  user      User     @relation(fields: [userId], references: [id])
+  class     Class[]
+
+  @@map("teachers")
+}
+
+model Student {
+  studentId Int      @id @default(autoincrement()) @map("student_id")
+  userId    Int      @unique @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  user      User     @relation(fields: [userId], references: [id])
+  class     Class[]
+
+  @@map("students")
+}
+
+model Class {
+  classId   Int      @id @default(autoincrement()) @map("class_id")
+  studentId Int      @map("student_id")
+  teacherId Int      @map("teacher_id")
+  subject   String
+  createdAt DateTime @default(now()) @map("created_at")
+  student   Student  @relation(fields: [studentId], references: [studentId])
+  teacher   Teacher  @relation(fields: [teacherId], references: [teacherId])
+
+  Schedule   Schedule[]
+  Exam       Exam[]
+  Attendance Attendance[]
+  Task       Task[]
+
+  @@map("class")
+}
+
+model Attendance {
+  attendanceId Int             @id @default(autoincrement()) @map("attendance_id")
+  classId      Int             @map("class_id")
+  todayDate    DateTime        @map("today_date")
+  state        AttendanceState @default(ATTENDANCE)
+  createdAt    DateTime        @default(now()) @map("created_at")
+  updatedAt    DateTime        @updatedAt @map("updated_at")
+  class        Class           @relation(fields: [classId], references: [classId])
+
+  @@map("attendance")
+}
+
+model Task {
+  taskId        Int       @id @default(autoincrement()) @map("task_id")
+  classId       Int       @map("class_id")
+  title         String    @map("title")
+  description   String    @map("description")
+  studentAnswer String    @map("student_answer")
+  submit        Submit    @default(FAIL)
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  class         Class     @relation(fields: [classId], references: [classId])
+  Feedback      Feedback?
+
+  @@map("task")
+}
+
+model Schedule {
+  scheduleId  Int      @id @default(autoincrement()) @map("schedule_id")
+  classId     Int      @map("class_id")
+  date        DateTime @map("date")
+  otherMatter String   @map("other_matter")
+  progress    String   @map("progress")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  class       Class    @relation(fields: [classId], references: [classId])
+
+  @@map("schedule")
+}
+
+model Exam {
+  examId    Int      @id @default(autoincrement()) @map("exam_id")
+  classId   Int      @map("class_id")
+  subject   String   @map("subject")
+  date      DateTime @map("date")
+  grade     Int      @map("grade")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  class     Class    @relation(fields: [classId], references: [classId])
+
+  @@map("exam")
+}
+
+model Feedback {
+  feedbackId Int      @id @default(autoincrement()) @map("feedback_id")
+  taskId     Int      @unique @map("task_id")
+  title      String   @map("title")
+  comment    String   @map("comment")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  task       Task     @relation(fields: [taskId], references: [taskId])
+
+  @@map("feedback")
+}
+
+enum UserRole {
+  TEACHER
+  STUDENT
+}
+
+enum AttendanceState {
+  ATTENDANCE
+  LATE
+  DEFER
+}
+
+enum Submit {
+  SUCCESS
+  FAIL
+}

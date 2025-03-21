@@ -1,7 +1,7 @@
-import AuthRepository from "../repositories/auth.repository";
+import AuthRepository from '../repositories/auth.repository.js';
 
-class AuthService{
-    authRepository = new AuthRepository();
+class AuthService {
+  authRepository = new AuthRepository();
 }
 
 export default AuthService;

@@ -1,7 +1,7 @@
-import AttendanceService from "../services/attendance.service";
+import AttendanceService from '../services/attendance.service.js';
 
-class AttendanceController{
-    attendanceService = new AttendanceService();
+class AttendanceController {
+  attendanceService = new AttendanceService();
 }
 
 export default AttendanceController;

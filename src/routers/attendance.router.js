@@ -1,12 +1,12 @@
-import express from 'express'
-import AttendanceRepository from '../repositories/attendance.repository';
-import { prisma } from '../utils/prisma.utils';
-import AttendanceService from '../services/attendance.service';
-import AttendanceController from '../controllers/attendance.controller';
+import express from 'express';
+import AttendanceRepository from '../repositories/attendance.repository.js';
+import { prisma } from '../utils/prisma.utils.js';
+import AttendanceService from '../services/attendance.service.js';
+import AttendanceController from '../controllers/attendance.controller.js';
 
-const attendanceRouter = express.Router()
+const attendanceRouter = express.Router();
 const attendanceRepository = new AttendanceRepository(prisma);
 const attendanceService = new AttendanceService(attendanceRepository);
 const attendanceController = new AttendanceController(attendanceService);
 
-export {attendanceRouter}
+export { attendanceRouter };

@@ -28,7 +28,7 @@ class EmailController {
       const { verifyNumber } = req.body;
 
       // 인증 번호 일치하는지 확인에 필요한 유저 ID 가져오기
-      const userId = req.user.userId;
+      const userId = req.user.id;
 
       const verifyCryptogram = await this.emailService.verifyCryptogram(
         verifyNumber,

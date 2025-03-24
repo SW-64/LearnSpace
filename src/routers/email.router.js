@@ -3,6 +3,7 @@ import EmailRepository from '../repositories/email.repository.js';
 import { prisma } from '../utils/prisma.utils.js';
 import EmailService from '../services/email.service.js';
 import EmailController from '../controllers/email.controller.js';
+import { requireAccessToken } from '../middlewares/require-access-token.middleware.js';
 
 const emailRouter = express.Router();
 const emailRepository = new EmailRepository(prisma);
@@ -13,5 +14,9 @@ const emailController = new EmailController(emailService);
 emailRouter.post('/request-verification', emailController.requestVerification);
 
 // 이메일 인증 코드 확인 API - 학생권한
-//emailController.post('/verify-code');
+emailRouter.post(
+  '/verify-code',
+  requireAccessToken,
+  emailController.verifyCryptogram,
+);
 export { emailRouter };

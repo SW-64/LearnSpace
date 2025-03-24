@@ -2,8 +2,9 @@ import jwt from 'jsonwebtoken';
 import { HTTP_STATUS } from '../constants/http-status.constant.js';
 import { MESSAGES } from '../constants/message.constant.js';
 import { ACCESS_TOKEN_SECRET } from '../constants/env.constant.js';
-import { AuthRepository } from '../repositories/auth.repository.js';
-
+import AuthRepository from '../repositories/auth.repository.js';
+import { prisma } from '../utils/prisma.utils.js';
+const authRepository = new AuthRepository(prisma);
 export const requireAccessToken = async (req, res, next) => {
   try {
     const authorization = req.headers.authorization;
@@ -53,7 +54,7 @@ export const requireAccessToken = async (req, res, next) => {
 
     // payload에 담긴 사용자 id와 일치하는 사용자가 없는 경우
     const { id } = payload;
-    const user = await AuthRepository.findUserById(id);
+    const user = await authRepository.findUserById(id);
 
     if (!user) {
       return res.status(HTTP_STATUS.UNAUTHORIZED).json({

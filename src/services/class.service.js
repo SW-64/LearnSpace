@@ -1,7 +1,7 @@
-import ClassRepository from "../repositories/class.repository";
+import ClassRepository from '../repositories/class.repository.js';
 
-class ClassService{
-    classRepository = new ClassRepository();
+class ClassService {
+  classRepository = new ClassRepository();
 }
 
 export default ClassService;

@@ -1,7 +1,7 @@
-import TaskRepository from "../repositories/task.repository";
+import TaskRepository from '../repositories/task.repository.js';
 
-class TaskService{
-    taskRepository = new TaskRepository();
+class TaskService {
+  taskRepository = new TaskRepository();
 }
 
 export default TaskService;

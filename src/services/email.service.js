@@ -1,10 +1,15 @@
 import EmailRepository from '../repositories/email.repository.js';
 import nodemailer from 'nodemailer';
 import 'dotenv/config';
+import Redis from 'ioredis';
+import AuthRepository from '../repositories/auth.repository.js';
+import { ConflictError, NotFoundError } from '../errors/http.error.js';
 
 class EmailService {
   emailRepository = new EmailRepository();
+  authRepository = new AuthRepository();
 
+  // 이메일 인증 코드 요청 API - 선생님 권한
   requestVerification = async (email) => {
     // 유저 데이터에 email을 조회한 후, 있으면 통과 없으면 에러 처리
     // 추후 구현
@@ -14,8 +19,14 @@ class EmailService {
     // const googlePassword = process.env.GOOGLE_PASSWORD;
     // const emailService = process.env.EMAIL_SERVICE;
 
-    // 인증 코드 구현
-    const cryptogram = 'abcd';
+    // 인증 코드 생성
+    const cryptogram = generate4DigitRandom();
+
+    // redis를 활용해 인증 번호를 10분동안만 저장
+    const redis = new Redis();
+    const key = `cryptogram:${email}`;
+    const value = cryptogram;
+    redis.set(key, value, 'EX', 600); // 600초 = 10분 TTL
 
     // createTransport = 메일 서버와 연결 설정, auth는 계정의 아이디 비번를 확인
     // const transporter = nodemailer.createTransport({
@@ -45,6 +56,40 @@ class EmailService {
 
     return cryptogram;
   };
+
+  // 이메일 인증 확인 요청 API - 학생 권한
+  verifyCryptogram = async (verifyNumber, userId) => {
+    // 레디스 set할때, 이메일이 key이기 때문에 유저 이메일 가져오기
+    const user = await this.authRepository.findUserById(userId);
+    const userEmail = user.email;
+
+    // email로 가져온 key값으로 value( 인증번호 ) 찾기
+    const key = `cryptogram:${userEmail}`;
+    const redis = new Redis();
+    const value = await redis.get(key);
+
+    // 만약 인증코드가 만료되었다면 에러처리
+    if (!value) {
+      throw new NotFoundError('인증코드가 만료되었거나 존재하지 않습니다.');
+    }
+
+    // 인증코드가 입력한 숫자와 다르다면 에러처리
+    if (value !== verifyNumber) {
+      throw new ConflictError('인증 코드가 일치하지 않습니다.');
+    }
+
+    // 검증 성공했다면 인증 처리 후, 인증 코드 삭제
+    await redis.del;
+
+    return;
+  };
 }
+// 인증 코드 구현
+const generate4DigitRandom = () => {
+  const min = 1000;
+  const max = 9999;
+  const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+  return randomNumber;
+};
 
 export default EmailService;

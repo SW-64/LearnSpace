@@ -20,6 +20,28 @@ class EmailController {
       next(err);
     }
   };
+
+  // 이메일 인증 확인 요청 API - 학생 권한
+  verifyCryptogram = async (req, res, next) => {
+    try {
+      // 인증 번호 가져오기
+      const { verifyNumber } = req.body;
+
+      // 인증 번호 일치하는지 확인에 필요한 유저 ID 가져오기
+      const userId = req.user.userId;
+
+      const verifyCryptogram = await this.emailService.verifyCryptogram(
+        verifyNumber,
+        userId,
+      );
+      return res.status(HTTP_STATUS.OK).json({
+        status: HTTP_STATUS.OK,
+        message: '이메일 인증 확인 요청 완료',
+      });
+    } catch (err) {
+      next(err);
+    }
+  };
 }
 
 export default EmailController;

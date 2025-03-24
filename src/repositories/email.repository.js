@@ -1,3 +1,3 @@
-class EmailRepository{}
+class EmailRepository {}
 
-export default EmailRepository
+export default EmailRepository;

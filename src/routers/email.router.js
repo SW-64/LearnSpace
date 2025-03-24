@@ -11,7 +11,11 @@ const emailService = new EmailService(emailRepository);
 const emailController = new EmailController(emailService);
 
 // 이메일 인증 코드 요청 API - 선생님 권한
-emailRouter.post('/request-verification', emailController.requestVerification);
+emailRouter.post(
+  '/request-verification',
+  requireAccessToken,
+  emailController.requestVerification,
+);
 
 // 이메일 인증 코드 확인 API - 학생권한
 emailRouter.post(

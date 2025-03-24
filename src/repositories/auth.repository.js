@@ -4,6 +4,7 @@ import { authConstant } from '../constants/auth.constant.js';
 
 class AuthRepository {
   create = async ({ email, name, role, subject, password }) => {
+    //비밀번호 암호화처리
     const hashedPassword = bcrypt.hashSync(
       password,
       authConstant.HASH_SALT_ROUNDS,

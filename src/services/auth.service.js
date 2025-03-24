@@ -43,6 +43,7 @@ class AuthService {
 
     const payload = { id: user.id };
 
+    //access토큰 생성
     const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, {
       expiresIn: authConstant.ACCESS_TOKEN_EXPIRED_IN,
     });

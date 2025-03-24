@@ -28,11 +28,11 @@ class EmailController {
       const { verifyNumber } = req.body;
 
       // 인증 번호 일치하는지 확인에 필요한 유저 ID 가져오기
-      const userId = req.user.id;
+      const userEmail = req.user.email;
 
       const verifyCryptogram = await this.emailService.verifyCryptogram(
         verifyNumber,
-        userId,
+        userEmail,
       );
       return res.status(HTTP_STATUS.OK).json({
         status: HTTP_STATUS.OK,

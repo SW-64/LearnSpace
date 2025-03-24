@@ -62,11 +62,7 @@ class EmailService {
   };
 
   // 이메일 인증 확인 요청 API - 학생 권한
-  verifyCryptogram = async (verifyNumber, userId) => {
-    // 레디스 set할때, 이메일이 key이기 때문에 유저 이메일 가져오기
-    const user = await this.authRepository.findUserById(userId);
-    const userEmail = user.email;
-
+  verifyCryptogram = async (verifyNumber, userEmail) => {
     // email로 가져온 key값으로 value( 인증번호 ) 찾기
     const key = `cryptogram:${userEmail}`;
     const redis = new Redis();

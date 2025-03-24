@@ -9,7 +9,7 @@ import { ACCESS_TOKEN_SECRET } from '../constants/env.constant.js';
 class AuthService {
   authRepository = new AuthRepository();
 
-  signUp = async ({ email, name, role, subject, password }) => {
+  signUp = async ({ email, name, role, subject, password, passwordCheck }) => {
     const existedUser = await this.authRepository.findUserByEmail(email);
 
     if (existedUser) {

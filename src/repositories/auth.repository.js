@@ -14,8 +14,8 @@ class AuthRepository {
         email,
         name,
         role,
-        subject,
         password: hashedPassword,
+        ...(role === 'TEACHER' && { subject }),
       },
     });
 
@@ -23,7 +23,7 @@ class AuthRepository {
   };
 
   findUserByEmail = async (email) => {
-    const user = await prisma.user.findUnique({ where: email });
+    const user = await prisma.user.findUnique({ where: { email } });
     return user;
   };
 

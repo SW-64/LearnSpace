@@ -23,7 +23,7 @@ export const MESSAGES = {
         REQUIRED: '역할을 입력해 주세요.',
       },
       SUBJECT: {
-        REQUIRED: '과목을 입력해 주세요.',
+        REQUIRED: '담당 과목을 입력해 주세요.',
       },
       UNAUTHORIZED: '인증 정보가 유효하지 않습니다.',
       JWT: {

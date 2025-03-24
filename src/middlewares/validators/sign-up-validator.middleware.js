@@ -13,6 +13,13 @@ const schema = Joi.object({
   role: Joi.string().valid('STUDENT', 'TEACHER').messages({
     'any.required': MESSAGES.AUTH.COMMON.ROLE.REQUIRED,
   }),
+  subject: Joi.string().when('role', {
+    is: 'TEACHER',
+    then: Joi.required().messages({
+      'any.required': MESSAGES.AUTH.COMMON.SUBJECT.REQUIRED,
+    }),
+    otherwise: Joi.optional(),
+  }),
   password: Joi.string()
     .required()
     .min(authConstant.MIN_PASSWORD_LENGTH)

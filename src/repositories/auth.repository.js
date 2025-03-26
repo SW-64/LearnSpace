@@ -16,8 +16,23 @@ class AuthRepository {
         name,
         role,
         password: hashedPassword,
-        ...(role === 'TEACHER' && { subject }),
+        ...(role === 'TEACHER' && { subject }), // 선생님인 경우 과목 작성
+        ...(role === 'TEACHER' && {
+          // 선생님일 경우 teacher 테이블 생성
+          teacher: {
+            create: {
+              subject,
+            },
+          },
+        }),
+        ...(role === 'STUDENT' && {
+          // 학생일 경우 student 테이블 생성
+          student: {
+            create: {},
+          },
+        }),
       },
+      include: { teacher: true, student: true },
     });
 
     data.password = undefined;

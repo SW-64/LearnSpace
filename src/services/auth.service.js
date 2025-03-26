@@ -2,7 +2,11 @@ import AuthRepository from '../repositories/auth.repository.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { MESSAGES } from '../constants/message.constant.js';
-import { ConflictError, UnauthorizedError } from '../errors/http.error.js';
+import {
+  ConflictError,
+  UnauthorizedError,
+  BadRequestError,
+} from '../errors/http.error.js';
 import { authConstant } from '../constants/auth.constant.js';
 import { ACCESS_TOKEN_SECRET } from '../constants/env.constant.js';
 
@@ -19,6 +23,10 @@ class AuthService {
       throw new ConflictError(
         MESSAGES.AUTH.COMMON.PASSWORD_CHECK.NOT_MATCHTED_WITH_PASSWORD,
       );
+    }
+    // 학생이 과목을 작성할려는 경우 에러발생
+    if (role == 'STUDENT' && subject) {
+      throw new BadRequestError(MESSAGES.AUTH.SIGN_UP.STUDENT_INVALID);
     }
 
     const data = await this.authRepository.create({

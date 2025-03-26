@@ -36,6 +36,7 @@ export const MESSAGES = {
     },
     SIGN_UP: {
       SUCCEED: '회원가입에 성공했습니다.',
+      STUDENT_INVALID: '학생은 과목을 입력할 수 없습니다.',
     },
     SIGN_IN: {
       IS_NOT_EMAIL: '인증정보가 유효하지 않습니다.',

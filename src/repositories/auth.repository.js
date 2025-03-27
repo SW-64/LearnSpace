@@ -79,7 +79,18 @@ class AuthRepository {
     return existedRefreshToken;
   };
 
-  signOut = async (user) => {};
+  signOut = async (user) => {
+    const userId = user.id;
+
+    await prisma.refreshToken.update({
+      where: { userId },
+      data: {
+        refreshToken: null,
+      },
+    });
+
+    return userId;
+  };
 }
 
 export default AuthRepository;

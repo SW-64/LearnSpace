@@ -44,6 +44,21 @@ class AuthController {
     }
   };
 
+  signOut = async (req, res, next) => {
+    try {
+      const user = req.user;
+      const data = await this.authService.signOut(user);
+
+      return res.status(HTTP_STATUS.OK).json({
+        status: HTTP_STATUS.OK,
+        message: MESSAGES.AUTH.SIGN_OUT.SUCCEED,
+        data: { id: user.id },
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   Token = async (req, res, next) => {
     try {
       const user = req.user;

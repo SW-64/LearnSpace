@@ -16,6 +16,8 @@ authRouter.post('/sign-up', signUpValidator, authController.signUp);
 
 authRouter.post('/sign-in', signInValidator, authController.signIn);
 
+authRouter.post('/sign-out', requireRefreshToken, authController.signOut);
+
 authRouter.post('/token', requireRefreshToken, authController.Token);
 
 export { authRouter };

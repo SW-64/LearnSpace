@@ -48,5 +48,8 @@ export const MESSAGES = {
       IS_NOT_EXIST: '정보가 일치하지 않습니다.',
       SUCCEED: '로그아웃에 성공했습니다.',
     },
+    TOKEN: {
+      SUCCEED: '토큰 재발급에 성공했습니다.',
+    },
   },
 };

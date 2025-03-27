@@ -43,6 +43,21 @@ class AuthController {
       next(error);
     }
   };
+
+  Token = async (req, res, next) => {
+    try {
+      const user = req.user;
+      const data = await this.authService.token(user);
+
+      return res.status(HTTP_STATUS.OK).json({
+        status: HTTP_STATUS.OK,
+        message: MESSAGES.AUTH.TOKEN.SUCCEED,
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default AuthController;

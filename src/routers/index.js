@@ -8,7 +8,7 @@ import { classRouter } from './class.router.js';
 import { gradeRouter } from './grade.router.js';
 
 const apiRouter = express.Router();
-
+const basicUrl = 'dashboard/teachers/:teacherId/students/:studentId';
 // 인증 라우터
 apiRouter.use('/api/auth', authRouter);
 
@@ -16,7 +16,7 @@ apiRouter.use('/api/auth', authRouter);
 apiRouter.use('/api/email', emailRouter);
 
 // 대시보드 - 출석 라우터
-apiRouter.use('/api/attendance', attendanceRouter);
+apiRouter.use(`/api/${basicUrl}/attendance`, attendanceRouter);
 
 // 대시보드 - 과제 라우터
 apiRouter.use('/api/task', taskRouter);

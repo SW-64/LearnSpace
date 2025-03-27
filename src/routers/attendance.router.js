@@ -9,4 +9,9 @@ const attendanceRepository = new AttendanceRepository(prisma);
 const attendanceService = new AttendanceService(attendanceRepository);
 const attendanceController = new AttendanceController(attendanceService);
 
+// 출석체크
+attendanceRouter.use('', attendanceController.checkAttendance);
+
+// 출석체크 조회
+
 export { attendanceRouter };

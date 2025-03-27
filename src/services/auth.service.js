@@ -8,7 +8,10 @@ import {
   BadRequestError,
 } from '../errors/http.error.js';
 import { authConstant } from '../constants/auth.constant.js';
-import { ACCESS_TOKEN_SECRET } from '../constants/env.constant.js';
+import {
+  ACCESS_TOKEN_SECRET,
+  REFRESH_TOKEN_SECRET,
+} from '../constants/env.constant.js';
 
 class AuthService {
   authRepository = new AuthRepository();
@@ -51,12 +54,24 @@ class AuthService {
 
     const payload = { id: user.id };
 
-    //access토큰 생성
+    //토큰 생성 (accessToken, refreshToken)
     const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, {
       expiresIn: authConstant.ACCESS_TOKEN_EXPIRED_IN,
     });
+    const refreshToken = jwt.sign(payload, REFRESH_TOKEN_SECRET, {
+      expiresIn: authConstant.REFRESH_TOKEN_EXPIRED_IN,
+    });
 
-    return { accessToken };
+    const userId = payload.id;
+    await this.authRepository.upsertRefreshToken(userId, refreshToken);
+
+    return { accessToken, refreshToken };
+  };
+
+  signOut = async (user) => {
+    const data = await this.authRepository.signOut(user);
+
+    return data;
   };
 }
 

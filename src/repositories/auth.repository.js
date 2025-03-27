@@ -51,6 +51,46 @@ class AuthRepository {
 
     return user;
   };
+
+  upsertRefreshToken = async (userId, refreshToken) => {
+    const hashedRefreshToken = bcrypt.hashSync(
+      refreshToken,
+      authConstant.HASH_SALT_ROUNDS,
+    );
+    const getRefreshToken = await prisma.refreshToken.upsert({
+      where: { userId },
+      // refreshToken을 가지고 있는 경우 : 업데이트
+      update: { refreshToken: hashedRefreshToken },
+      // refreshToken이 없는 경우 : 생성
+      create: {
+        userId,
+        refreshToken: hashedRefreshToken,
+      },
+    });
+
+    return getRefreshToken;
+  };
+
+  findRefreshToken = async (id) => {
+    const existedRefreshToken = await prisma.refreshToken.findUnique({
+      where: { userId: id },
+    });
+
+    return existedRefreshToken;
+  };
+
+  signOut = async (user) => {
+    const userId = user.id;
+
+    await prisma.refreshToken.update({
+      where: { userId },
+      data: {
+        refreshToken: null,
+      },
+    });
+
+    return userId;
+  };
 }
 
 export default AuthRepository;

@@ -15,16 +15,17 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  name      String
-  role      UserRole @default(STUDENT)
-  subject   String?
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  teacher   Teacher?
-  student   Student?
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  password     String
+  name         String
+  role         UserRole @default(STUDENT)
+  subject      String?
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  teacher      Teacher?
+  student      Student?
+  refreshToken RefreshToken?
 
   @@map("users")
 }
@@ -132,6 +133,17 @@ model Feedback {
   task       Task     @relation(fields: [taskId], references: [taskId])
 
   @@map("feedback")
+}
+
+model RefreshToken {
+  refreshTokenId Int      @id @default(autoincrement()) @map("refresh_token_id")
+  userId         Int      @unique @map("user_id")
+  refreshToken   String   @map("refresh_token")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+  user           User     @relation(fields: [userId], references: [id])
+
+  @@map("refresh_tokens")
 }
 
 enum UserRole {

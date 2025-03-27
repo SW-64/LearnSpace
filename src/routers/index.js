@@ -13,7 +13,7 @@ const basicUrl = 'dashboard/teachers/:teacherId/students/:studentId';
 apiRouter.use('/api/auth', authRouter);
 
 // 이메일 라우터
-apiRouter.use('/api/email', emailRouter);
+apiRouter.use(`/api/${basicUrl}/email`, emailRouter);
 
 // 대시보드 - 출석 라우터
 apiRouter.use(`/api/${basicUrl}/attendance`, attendanceRouter);

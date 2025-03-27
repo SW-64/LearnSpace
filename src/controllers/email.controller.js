@@ -10,12 +10,8 @@ class EmailController {
       // 학생 이메일 가져오기
       const { email } = req.body;
 
-      // 선생님 정보 가져오기
-      const user = req.user;
-      const requestVerification = await this.emailService.requestVerification(
-        email,
-        user,
-      );
+      const requestVerification =
+        await this.emailService.requestVerification(email);
       return res.status(HTTP_STATUS.OK).json({
         status: HTTP_STATUS.OK,
         message: '이메일 인증 코드 요청 완료',

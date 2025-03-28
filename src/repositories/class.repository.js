@@ -2,12 +2,13 @@ import { prisma } from '../utils/prisma.utils.js';
 
 class ClassRepository {
   // 수업정보 생성
-  createClass = async (teacherId, subject, userId) => {
-    console.log(teacherId, subject, userId);
+  createClass = async (teacherId, subject, studentId) => {
     const classInformation = await prisma.class.create({
-      studentId: userId,
-      teacherId,
-      subject,
+      data: {
+        studentId,
+        teacherId,
+        subject,
+      },
     });
     return classInformation;
   };
@@ -19,6 +20,19 @@ class ClassRepository {
         teacherId,
       },
     });
+  };
+
+  // 선생님 담당 과목 조회
+  getTeacherSubject = async (teacherId) => {
+    const data = await prisma.teacher.findUnique({
+      where: {
+        teacherId,
+      },
+      select: {
+        subject: true,
+      },
+    });
+    return data.subject;
   };
 }
 

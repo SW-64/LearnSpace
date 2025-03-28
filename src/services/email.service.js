@@ -63,19 +63,13 @@ class EmailService {
     return cryptogram;
   };
 
-  // 이메일 인증 확인 요청 API - 학생 권한
-  verifyCryptogram = async (verifyNumber, user) => {
+  // 이메일 인증 확인 API - 학생 권한
+  verifyCryptogram = async (verifyNumber, user, teacherId, studentId) => {
     // email로 가져온 key값으로 value( 인증번호 ) 찾기
     const userEmail = user.email;
     const key = `cryptogram:${userEmail}`;
     const redis = new Redis();
     const cryptogram = await redis.get(key);
-
-    // // JSON parse로 값 꺼내기
-    // const parsed = JSON.parse(value);
-    // const cryptogram = parsed.cryptogram;
-    // const teacherId = parsed.id;
-    // const subject = parsed.subject;
 
     // 만약 인증코드가 만료되었다면 에러처리
     if (!cryptogram) {
@@ -87,12 +81,14 @@ class EmailService {
       throw new ConflictError('인증 코드가 일치하지 않습니다.');
     }
 
-    // 검증 성공했기에 수업 테이블에 데이터 저장
+    // 선생님 담당과목 가져오기
+    const subject = await this.classRepository.getTeacherSubject(teacherId);
 
+    // 검증 성공했기에 수업 테이블에 데이터 저장
     const classData = await this.classRepository.createClass(
       teacherId,
       subject,
-      userId,
+      studentId,
     );
     // 인증 처리 후, 인증 코드 삭제
     await redis.del;

@@ -55,23 +55,25 @@ export const requireAccessToken = (requiredRole) => {
 
       // payload에 담긴 사용자 id와 일치하는 사용자가 없는 경우
       const { id, role } = payload;
-      console.log(payload);
+
       const user = await authRepository.findUserById(id);
-      console.log(user);
+
       if (!user) {
         return res.status(HTTP_STATUS.UNAUTHORIZED).json({
           status: HTTP_STATUS.UNAUTHORIZED,
           message: MESSAGES.AUTH.COMMON.JWT.NO_USER,
         });
       }
-
-      // 해당 권한이 맞지 않을 경우, 에러 반환
-      if (role != requiredRole) {
-        return res.status(HTTP_STATUS.UNAUTHORIZED).json({
-          status: HTTP_STATUS.UNAUTHORIZED,
-          message: '해당 권한이 없습니다.',
-        });
+      if (requiredRole) {
+        // 해당 권한이 맞지 않을 경우, 에러 반환
+        if (role != requiredRole) {
+          return res.status(HTTP_STATUS.UNAUTHORIZED).json({
+            status: HTTP_STATUS.UNAUTHORIZED,
+            message: '해당 권한이 없습니다.',
+          });
+        }
       }
+
       req.user = user;
       next();
     } catch (error) {

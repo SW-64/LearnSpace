@@ -5,7 +5,7 @@ import EmailService from '../services/email.service.js';
 import EmailController from '../controllers/email.controller.js';
 import { requireAccessToken } from '../middlewares/require-access-token.middleware.js';
 
-const emailRouter = express.Router();
+const emailRouter = express.Router({ mergeParams: true });
 const emailRepository = new EmailRepository(prisma);
 const emailService = new EmailService(emailRepository);
 const emailController = new EmailController(emailService);

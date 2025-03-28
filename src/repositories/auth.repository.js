@@ -47,6 +47,9 @@ class AuthRepository {
     const user = await prisma.user.findUnique({
       where: { id },
       omit: { password: true },
+      // select: {
+      //   data: {},
+      // },
     });
 
     return user;

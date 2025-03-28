@@ -20,6 +20,7 @@ class ClassRepository {
         teacherId,
       },
     });
+    return data;
   };
 
   // 선생님 담당 과목 조회
@@ -33,6 +34,26 @@ class ClassRepository {
       },
     });
     return data.subject;
+  };
+
+  // 유저 ID로 선생님 ID 조회
+  getTeacherIdByUserId = async (userId) => {
+    const teacher = await prisma.teacher.findUnique({
+      where: {
+        userId: +userId,
+      },
+    });
+    return teacher.teacherId;
+  };
+
+  // 유저 ID로 학생 ID 조회
+  getStudentIdByUserId = async (userId) => {
+    const student = await prisma.student.findUnique({
+      where: {
+        userId,
+      },
+    });
+    return student.studentId;
   };
 }
 

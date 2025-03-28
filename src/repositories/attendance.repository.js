@@ -4,17 +4,22 @@ class AttendanceRepository {
   // 출석체크
   checkAttendance = async (classId, todayDate, state) => {
     const data = await prisma.attendance.create({
-      classId,
-      todayDate,
-      state,
+      data: {
+        classId,
+        todayDate,
+        state,
+      },
     });
   };
 
   // 출석체크 조회
-  getAttendance = async (classId, todayDate, state) => {
+  getAttendance = async (classId) => {
     const data = await prisma.attendance.findMany({
-      classId,
+      where: {
+        classId,
+      },
     });
+    return data;
   };
 }
 

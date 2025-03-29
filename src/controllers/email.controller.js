@@ -10,12 +10,8 @@ class EmailController {
       // 학생 이메일 가져오기
       const { email } = req.body;
 
-      // 선생님 정보 가져오기
-      const user = req.user;
-      const requestVerification = await this.emailService.requestVerification(
-        email,
-        user,
-      );
+      const requestVerification =
+        await this.emailService.requestVerification(email);
       return res.status(HTTP_STATUS.OK).json({
         status: HTTP_STATUS.OK,
         message: '이메일 인증 코드 요청 완료',
@@ -26,7 +22,7 @@ class EmailController {
     }
   };
 
-  // 이메일 인증 확인 요청 API - 학생 권한
+  // 이메일 인증 확인 API - 학생 권한
   verifyCryptogram = async (req, res, next) => {
     try {
       // 인증 번호 가져오기
@@ -34,10 +30,13 @@ class EmailController {
 
       // 인증 번호 일치하는지 확인에 필요한 유저 ID 가져오기
       const user = req.user;
+      const { teacherId, studentId } = req.params;
 
       const verifyCryptogram = await this.emailService.verifyCryptogram(
         verifyNumber,
         user,
+        +teacherId,
+        +studentId,
       );
       return res.status(HTTP_STATUS.OK).json({
         status: HTTP_STATUS.OK,

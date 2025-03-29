@@ -4,13 +4,15 @@ import 'dotenv/config';
 import Redis from 'ioredis';
 import AuthRepository from '../repositories/auth.repository.js';
 import { ConflictError, NotFoundError } from '../errors/http.error.js';
+import ClassRepository from '../repositories/class.repository.js';
 
 class EmailService {
   emailRepository = new EmailRepository();
   authRepository = new AuthRepository();
+  classRepository = new ClassRepository();
 
   // 이메일 인증 코드 요청 API - 선생님 권한
-  requestVerification = async (email, user) => {
+  requestVerification = async (email) => {
     // 유저 데이터에 email을 조회한 후, 있으면 통과 없으면 에러 처리
     const existedEmail = await this.authRepository.findUserByEmail(email);
     if (!existedEmail) throw new NotFoundError('이메일이 존재하지 않습니다.');
@@ -27,10 +29,7 @@ class EmailService {
     // redis를 활용해 인증 번호를 10분동안만 저장
     const redis = new Redis();
     const key = `cryptogram:${email}`;
-    const value = JSON.stringify({
-      ...user,
-      cryptogram,
-    });
+    const value = cryptogram;
 
     await redis.set(key, value, 'EX', 600); // 600초 = 10분 TTL
     /*
@@ -64,20 +63,13 @@ class EmailService {
     return cryptogram;
   };
 
-  // 이메일 인증 확인 요청 API - 학생 권한
-  verifyCryptogram = async (verifyNumber, user) => {
+  // 이메일 인증 확인 API - 학생 권한
+  verifyCryptogram = async (verifyNumber, user, teacherId, studentId) => {
     // email로 가져온 key값으로 value( 인증번호 ) 찾기
     const userEmail = user.email;
-    const userId = user.id;
     const key = `cryptogram:${userEmail}`;
     const redis = new Redis();
-    const value = await redis.get(key);
-
-    // JSON parse로 값 꺼내기
-    const parsed = JSON.parse(value);
-    const cryptogram = parsed.cryptogram;
-    const teacherId = parsed.id;
-    const subject = parsed.subject;
+    const cryptogram = await redis.get(key);
 
     // 만약 인증코드가 만료되었다면 에러처리
     if (!cryptogram) {
@@ -89,12 +81,14 @@ class EmailService {
       throw new ConflictError('인증 코드가 일치하지 않습니다.');
     }
 
+    // 선생님 담당과목 가져오기
+    const subject = await this.classRepository.getTeacherSubject(teacherId);
+
     // 검증 성공했기에 수업 테이블에 데이터 저장
-    // 선생님 ID, 학생 ID, 과목
-    const classData = await this.emailRepository.createClass(
+    const classData = await this.classRepository.createClass(
       teacherId,
       subject,
-      userId,
+      studentId,
     );
     // 인증 처리 후, 인증 코드 삭제
     await redis.del;

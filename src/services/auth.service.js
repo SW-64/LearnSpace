@@ -52,7 +52,7 @@ class AuthService {
       throw new UnauthorizedError(MESSAGES.AUTH.COMMON.UNAUTHORIZED);
     }
 
-    const payload = { id: user.id };
+    const payload = { id: user.id, role: user.role };
 
     // accessToken, refreshToken 생성
     const data = await this.generateAuthTokens(payload);
@@ -67,7 +67,7 @@ class AuthService {
   };
 
   token = async (user) => {
-    const payload = { id: user.id };
+    const payload = { id: user.id, role: user.role };
     const data = await this.generateAuthTokens(payload);
 
     return data;
@@ -76,7 +76,7 @@ class AuthService {
   //토큰 발급 함수
   generateAuthTokens = async (payload) => {
     const userId = payload.id;
-    console.log(userId);
+
     const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, {
       expiresIn: authConstant.ACCESS_TOKEN_EXPIRED_IN,
     });

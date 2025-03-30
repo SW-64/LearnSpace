@@ -52,4 +52,7 @@ export const MESSAGES = {
       SUCCEED: '토큰 재발급에 성공했습니다.',
     },
   },
+  EXAM: {
+    CREATE: '시험일정이 추가되었습니다.',
+  },
 };

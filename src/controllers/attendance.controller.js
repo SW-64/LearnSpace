@@ -7,21 +7,15 @@ class AttendanceController {
   // 출석체크
   checkAttendance = async (req, res, next) => {
     try {
-      // 파라미터에서 선생님, 학생 ID 추출
-      const { studentId, teacherId } = req.params;
-
+      // 수업데이터 가져오기
+      const classData = req.classData;
       // 사용자로부터 날짜, 상태 값 받기
       const { todayDate, state } = req.body;
 
-      // 선생님인지 추후 검증을 위한 현재 로그인 정보 받기
-      const userId = req.user.id;
-
       const data = await this.attendanceService.checkAttendance(
-        +studentId,
-        +teacherId,
         todayDate,
         state,
-        userId,
+        classData.classId,
       );
 
       return res.status(HTTP_STATUS.CREATED).json({
@@ -37,18 +31,11 @@ class AttendanceController {
   // 출석체크 조회
   getAttendance = async (req, res, next) => {
     try {
-      // 파라미터에서 선생님, 학생 ID 추출
-      const { studentId, teacherId } = req.params;
-
-      // 학생이라면 학생권한인지, 선생님이라면 선생님 권한인지 추후 확인하기 위해 정보 추출
-      const userRole = req.user.role;
-      const userId = req.user.id;
+      // 수업데이터 가져오기
+      const classData = req.classData;
 
       const data = await this.attendanceService.getAttendance(
-        +studentId,
-        +teacherId,
-        userId,
-        userRole,
+        classData.classId,
       );
 
       return res.status(HTTP_STATUS.CREATED).json({

@@ -19,7 +19,7 @@ apiRouter.use(`/api/${basicUrl}/email`, emailRouter);
 apiRouter.use(`/api/${basicUrl}/attendance`, attendanceRouter);
 
 // 대시보드 - 과제 라우터
-apiRouter.use('/api/task', taskRouter);
+apiRouter.use(`/api/${basicUrl}/tasks`, taskRouter);
 
 // 대시보드 - 시험 라우터
 apiRouter.use('/api/exam', examRouter);

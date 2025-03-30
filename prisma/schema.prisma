@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["omitApi"]
 }
 
@@ -15,14 +15,14 @@ datasource db {
 }
 
 model User {
-  id           Int      @id @default(autoincrement())
-  email        String   @unique
+  id           Int           @id @default(autoincrement())
+  email        String        @unique
   password     String
   name         String
-  role         UserRole @default(STUDENT)
+  role         UserRole      @default(STUDENT)
   subject      String?
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
   teacher      Teacher?
   student      Student?
   refreshToken RefreshToken?
@@ -87,7 +87,7 @@ model Task {
   classId       Int       @map("class_id")
   title         String    @map("title")
   description   String    @map("description")
-  studentAnswer String    @map("student_answer")
+  studentAnswer String?   @map("student_answer")
   submit        Submit    @default(FAIL)
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
@@ -138,7 +138,7 @@ model Feedback {
 model RefreshToken {
   refreshTokenId Int      @id @default(autoincrement()) @map("refresh_token_id")
   userId         Int      @unique @map("user_id")
-  refreshToken   String?   @map("refresh_token")
+  refreshToken   String?  @map("refresh_token")
   createdAt      DateTime @default(now()) @map("created_at")
   updatedAt      DateTime @updatedAt @map("updated_at")
   user           User     @relation(fields: [userId], references: [id])

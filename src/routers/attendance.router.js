@@ -4,6 +4,7 @@ import { prisma } from '../utils/prisma.utils.js';
 import AttendanceService from '../services/attendance.service.js';
 import AttendanceController from '../controllers/attendance.controller.js';
 import { requireAccessToken } from '../middlewares/require-access-token.middleware.js';
+import { verifyClassMember } from '../middlewares/verify-class-member.middleware.js';
 
 const attendanceRouter = express.Router({ mergeParams: true });
 const attendanceRepository = new AttendanceRepository(prisma);
@@ -14,6 +15,7 @@ const attendanceController = new AttendanceController(attendanceService);
 attendanceRouter.post(
   '',
   requireAccessToken('TEACHER'),
+  verifyClassMember,
   attendanceController.checkAttendance,
 );
 
@@ -21,6 +23,7 @@ attendanceRouter.post(
 attendanceRouter.get(
   '',
   requireAccessToken(''),
+  verifyClassMember,
   attendanceController.getAttendance,
 );
 

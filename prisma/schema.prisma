@@ -115,7 +115,7 @@ model Exam {
   classId   Int      @map("class_id")
   subject   String   @map("subject")
   date      DateTime @map("date")
-  grade     Int      @map("grade")
+  grade     Int?     @map("grade")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   class     Class    @relation(fields: [classId], references: [classId])

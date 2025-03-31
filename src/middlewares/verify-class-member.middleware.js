@@ -1,3 +1,4 @@
+import { ConflictError } from '../errors/http.error.js';
 import ClassRepository from '../repositories/class.repository.js';
 import { prisma } from '../utils/prisma.utils.js';
 

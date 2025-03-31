@@ -22,7 +22,7 @@ apiRouter.use(`/api/${basicUrl}/attendance`, attendanceRouter);
 apiRouter.use(`/api/${basicUrl}/tasks`, taskRouter);
 
 // 대시보드 - 시험 라우터
-apiRouter.use('/api/exam', examRouter);
+apiRouter.use(`/api/${basicUrl}/exam`, examRouter);
 
 // 대시보드 - 수업 라우터
 apiRouter.use('/api/class', classRouter);

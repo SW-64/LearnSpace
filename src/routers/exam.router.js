@@ -33,7 +33,7 @@ examRouter.patch(
   '/:examId',
   requireAccessToken(''),
   verifyClassMember,
-  examController.patchExam,
+  examController.updateExam,
 );
 
 //시험 일정 삭제

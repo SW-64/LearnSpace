@@ -46,7 +46,7 @@ class ExamController {
   };
 
   //시험 일정 수정
-  patchExam = async (req, res, next) => {
+  updateExam = async (req, res, next) => {
     try {
       const { examId } = req.params;
       const classId = req.classData.classId;

@@ -40,7 +40,7 @@ taskRouter.patch(
   '/:taskId',
   requireAccessToken('TEACHER'),
   verifyClassMember,
-  taskController.patchTask,
+  taskController.updateTask,
 );
 
 // 과제 제출

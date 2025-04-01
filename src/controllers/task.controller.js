@@ -69,7 +69,7 @@ class TaskController {
   };
 
   // 과제 수정
-  patchTask = async (req, res, next) => {
+  updateTask = async (req, res, next) => {
     try {
       // 파라미터에서 과제 ID 추출
       const { taskId } = req.params;
@@ -78,7 +78,7 @@ class TaskController {
       // 사용자로부터 제목, 설명 값 받기
       const { title, description } = req.body;
 
-      const data = await this.taskService.patchTask(
+      const data = await this.taskService.updateTask(
         title,
         description,
         +taskId,

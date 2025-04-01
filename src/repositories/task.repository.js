@@ -35,7 +35,7 @@ class TaskRepository {
   };
 
   // 과제 수정
-  patchTask = async (taskId, title, description) => {
+  updateTask = async (taskId, title, description) => {
     // 업데이트할 데이터를 담을 객체 생성
     const updateData = {};
 

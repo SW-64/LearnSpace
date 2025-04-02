@@ -25,7 +25,7 @@ apiRouter.use(`/api/${basicUrl}/tasks`, taskRouter);
 apiRouter.use(`/api/${basicUrl}/exam`, examRouter);
 
 // 대시보드 - 수업 라우터
-apiRouter.use('/api/class', classRouter);
+apiRouter.use(`/api/${basicUrl}/class`, classRouter);
 
 // 대시보드 - 성적 라우터
 apiRouter.use('/api/grade', gradeRouter);

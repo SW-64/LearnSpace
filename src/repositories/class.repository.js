@@ -55,6 +55,16 @@ class ClassRepository {
     });
     return student.studentId;
   };
+
+  //수업 ID로 수업조회
+  getClassById = async (classId) => {
+    const data = await prisma.class.findUnique({
+      where: {
+        classId,
+      },
+    });
+    return data;
+  };
 }
 
 export default ClassRepository;

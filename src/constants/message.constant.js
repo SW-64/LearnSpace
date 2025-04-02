@@ -59,4 +59,13 @@ export const MESSAGES = {
     DELETE: '시험 일정을 삭제했습니다.',
     NOT_EXIST: '해당하는 시험 일정이 존재하지 않습니다.',
   },
+  CLASS: {
+    SCHEDULE: {
+      SUCCEED: '수업 일정 생성에 성공했습니다.',
+      GET: '수업 일정 조회에 성공했습니다.',
+      PATCH: '수업 일정 수정에 성공했습니다.',
+      DELETE: '수업 일정을 취소했습니다.',
+      NOT_EXIST: '해당하는 수업 일정이 존재하지 않습니다.',
+    },
+  },
 };

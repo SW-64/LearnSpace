@@ -28,6 +28,6 @@ apiRouter.use(`/api/${basicUrl}/exam`, examRouter);
 apiRouter.use('/api/class', classRouter);
 
 // 대시보드 - 성적 라우터
-apiRouter.use('/api/grade', gradeRouter);
+apiRouter.use(`/api/${basicUrl}/exam/:examId/grades`, gradeRouter);
 
 export { apiRouter };

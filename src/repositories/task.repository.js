@@ -35,7 +35,7 @@ class TaskRepository {
   };
 
   // 과제 수정
-  patchTask = async (taskId, title, description) => {
+  updateTask = async (taskId, title, description) => {
     // 업데이트할 데이터를 담을 객체 생성
     const updateData = {};
 
@@ -64,6 +64,32 @@ class TaskRepository {
       data: {
         studentAnswer: studentAnswer,
         submit: 'SUCCESS',
+      },
+    });
+    return data;
+  };
+
+  // 과제 피드백 생성 / 수정
+  upsertTaskFeedback = async (taskId, comment) => {
+    const data = await prisma.task.update({
+      where: {
+        taskId,
+      },
+      data: {
+        comment,
+      },
+    });
+    return data;
+  };
+
+  // 과제 피드백 삭제
+  deleteTaskFeedback = async (taskId) => {
+    const data = await prisma.task.update({
+      where: {
+        taskId,
+      },
+      data: {
+        comment: null,
       },
     });
     return data;

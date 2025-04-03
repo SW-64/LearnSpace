@@ -33,11 +33,11 @@ class TaskService {
   };
 
   // 과제 수정
-  patchTask = async (title, description, taskId, classId) => {
+  updateTask = async (title, description, taskId, classId) => {
     // classId와 taskId가 해당되는 과제가 없을 때, 에러 반환
     this.getOneTask(taskId, classId);
 
-    const data = await this.taskRepository.patchTask(
+    const data = await this.taskRepository.updateTask(
       taskId,
       title,
       description,
@@ -54,8 +54,25 @@ class TaskService {
     const data = await this.taskRepository.submissionsTask(
       taskId,
       studentAnswer,
-      classId,
     );
+    return data;
+  };
+
+  // 과제 피드백 생성 / 수정
+  upsertTaskFeedback = async (taskId, comment, classId) => {
+    // classId와 taskId가 해당되는 과제가 없을 때, 에러 반환
+    this.getOneTask(taskId, classId);
+
+    const data = await this.taskRepository.upsertTaskFeedback(taskId, comment);
+    return data;
+  };
+
+  // 과제 피드백 삭제
+  deleteTaskFeedback = async (taskId, classId) => {
+    // classId와 taskId가 해당되는 과제가 없을 때, 에러 반환
+    this.getOneTask(taskId, classId);
+
+    const data = await this.taskRepository.deleteTaskFeedback(taskId);
     return data;
   };
 }

@@ -66,6 +66,7 @@ export const MESSAGES = {
       PATCH: '수업 일정 수정에 성공했습니다.',
       DELETE: '수업 일정을 취소했습니다.',
       NOT_EXIST: '해당하는 수업 일정이 존재하지 않습니다.',
+      NOT_PATCH: '수정된 내용이 없습니다.',
     },
   },
 };

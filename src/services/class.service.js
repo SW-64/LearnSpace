@@ -30,6 +30,38 @@ class ClassService {
     const data = await this.scheduleRepository.getSchedule(classId);
     return data;
   };
+
+  patchSchedule = async (classId, scheduleId, date, otherMatter, progress) => {
+    const existedSchedule = await this.scheduleRepository.getScheduleById(
+      classId,
+      scheduleId,
+    );
+    if (!existedSchedule) {
+      throw new NotFoundError(MESSAGES.CLASS.SCHEDULE.NOT_EXIST);
+    }
+
+    // 날짜 비교를 위해 ISO 문자열로 변환
+    const originDate = new Date(existedSchedule.date).toISOString();
+    const newDate = new Date(date).toISOString();
+
+    // 수정된 내용이 없는 경우 에러발생
+    if (
+      originDate == newDate &&
+      otherMatter == existedSchedule.otherMatter &&
+      progress == existedSchedule.progress
+    ) {
+      throw new NotFoundError(MESSAGES.CLASS.SCHEDULE.NOT_PATCH);
+    }
+
+    const newData = await this.scheduleRepository.patchSchedule(
+      scheduleId,
+      date,
+      otherMatter,
+      progress,
+    );
+
+    return newData;
+  };
 }
 
 export default ClassService;

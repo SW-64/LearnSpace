@@ -44,6 +44,31 @@ class ClassController {
       next(error);
     }
   };
+
+  //수업 일정 수정
+  updateClassSchedule = async (req, res, next) => {
+    try {
+      const classId = req.classData.classId;
+      const { scheduleId } = req.params;
+      const { date, otherMatter, progress } = req.body;
+
+      const data = await this.classService.patchSchedule(
+        classId,
+        +scheduleId,
+        date,
+        otherMatter,
+        progress,
+      );
+
+      return res.status(HTTP_STATUS.CREATED).json({
+        status: HTTP_STATUS.CREATED,
+        message: MESSAGES.CLASS.SCHEDULE.PATCH,
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default ClassController;

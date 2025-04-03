@@ -29,4 +29,12 @@ classRouter.get(
   classController.getClassSchedule,
 );
 
+//수업 일정 수정
+classRouter.patch(
+  '/schedule/:scheduleId',
+  requireAccessToken('TEACHER'),
+  verifyClassMember,
+  classController.updateClassSchedule,
+);
+
 export { classRouter };

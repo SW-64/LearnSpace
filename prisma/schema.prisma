@@ -83,16 +83,16 @@ model Attendance {
 }
 
 model Task {
-  taskId        Int       @id @default(autoincrement()) @map("task_id")
-  classId       Int       @map("class_id")
-  title         String    @map("title")
-  description   String    @map("description")
-  studentAnswer String?   @map("student_answer")
-  submit        Submit    @default(FAIL)
-  createdAt     DateTime  @default(now()) @map("created_at")
-  updatedAt     DateTime  @updatedAt @map("updated_at")
-  class         Class     @relation(fields: [classId], references: [classId])
-  Feedback      Feedback?
+  taskId        Int      @id @default(autoincrement()) @map("task_id")
+  classId       Int      @map("class_id")
+  title         String   @map("title")
+  description   String   @map("description")
+  studentAnswer String?  @map("student_answer")
+  submit        Submit   @default(FAIL)
+  comment       String?  @map("comment")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+  class         Class    @relation(fields: [classId], references: [classId])
 
   @@map("task")
 }
@@ -121,18 +121,6 @@ model Exam {
   class     Class    @relation(fields: [classId], references: [classId])
 
   @@map("exam")
-}
-
-model Feedback {
-  feedbackId Int      @id @default(autoincrement()) @map("feedback_id")
-  taskId     Int      @unique @map("task_id")
-  title      String   @map("title")
-  comment    String   @map("comment")
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
-  task       Task     @relation(fields: [taskId], references: [taskId])
-
-  @@map("feedback")
 }
 
 model RefreshToken {

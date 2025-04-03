@@ -51,4 +51,20 @@ taskRouter.post(
   taskController.submissionsTask,
 );
 
+// 과제 피드백 생성 / 수정
+taskRouter.post(
+  '/:taskId/feedback',
+  requireAccessToken('TEACHER'),
+  verifyClassMember,
+  taskController.upsertTaskFeedback,
+);
+
+// 과제 피드백 삭제
+taskRouter.delete(
+  '/:taskId/feedback',
+  requireAccessToken('TEACHER'),
+  verifyClassMember,
+  taskController.deleteTaskFeedback,
+);
+
 export { taskRouter };

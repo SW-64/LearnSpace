@@ -68,6 +68,32 @@ class TaskRepository {
     });
     return data;
   };
+
+  // 과제 피드백 생성 / 수정
+  upsertTaskFeedback = async (taskId, comment) => {
+    const data = await prisma.task.update({
+      where: {
+        taskId,
+      },
+      data: {
+        comment,
+      },
+    });
+    return data;
+  };
+
+  // 과제 피드백 삭제
+  deleteTaskFeedback = async (taskId) => {
+    const data = await prisma.task.update({
+      where: {
+        taskId,
+      },
+      data: {
+        comment: null,
+      },
+    });
+    return data;
+  };
 }
 
 export default TaskRepository;

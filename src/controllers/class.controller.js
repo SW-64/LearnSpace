@@ -27,6 +27,23 @@ class ClassController {
       next(error);
     }
   };
+
+  //수업 일정 전체조회
+  getClassSchedule = async (req, res, next) => {
+    try {
+      const classId = req.classData.classId;
+
+      const getSchedule = await this.classService.getSchedule(classId);
+
+      return res.status(HTTP_STATUS.CREATED).json({
+        status: HTTP_STATUS.CREATED,
+        message: MESSAGES.CLASS.SCHEDULE.GET,
+        getSchedule,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default ClassController;

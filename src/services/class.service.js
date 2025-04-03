@@ -18,7 +18,16 @@ class ClassService {
       otherMatter,
       progress,
     );
+    return data;
+  };
 
+  getSchedule = async (classId) => {
+    const existedClass = await this.classRepository.getClassById(classId);
+    if (!existedClass) {
+      throw new NotFoundError(MESSAGES.CLASS.SCHEDULE.NOT_EXIST);
+    }
+
+    const data = await this.scheduleRepository.getSchedule(classId);
     return data;
   };
 }

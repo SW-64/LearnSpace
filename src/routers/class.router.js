@@ -14,12 +14,19 @@ const classController = new ClassController(classService);
 const scheduleRepository = new ScheduleRepository(prisma);
 
 //수업 일정 생성
-
 classRouter.post(
   '/schedule',
   requireAccessToken('TEACHER'),
   verifyClassMember,
   classController.createClassSchedule,
+);
+
+//수업 일정 전체조회
+classRouter.get(
+  '/schedule',
+  requireAccessToken(''),
+  verifyClassMember,
+  classController.getClassSchedule,
 );
 
 export { classRouter };

@@ -37,4 +37,12 @@ classRouter.patch(
   classController.updateClassSchedule,
 );
 
+//수업 일정 취소
+classRouter.delete(
+  '/schedule/:scheduleId',
+  requireAccessToken('TEACHER'),
+  verifyClassMember,
+  classController.deleteClassSchedule,
+);
+
 export { classRouter };

@@ -69,6 +69,24 @@ class ClassController {
       next(error);
     }
   };
+
+  //수업 일정 취소
+
+  deleteClassSchedule = async (req, res, next) => {
+    try {
+      const { scheduleId } = req.params;
+      const classId = req.classData.classId;
+
+      const data = await this.classService.deleteSchedule(classId, +scheduleId);
+      return res.status(HTTP_STATUS.CREATED).json({
+        status: HTTP_STATUS.CREATED,
+        message: MESSAGES.CLASS.SCHEDULE.DELETE,
+        data: { scheduleId: data.scheduleId },
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default ClassController;

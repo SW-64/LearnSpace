@@ -59,5 +59,15 @@ class ScheduleRepository {
 
     return data;
   };
+
+  //수업 일정 취소
+  deleteSchedule = async (scheduleId) => {
+    const data = await prisma.schedule.delete({
+      where: {
+        scheduleId,
+      },
+    });
+    return data;
+  };
 }
 export default ScheduleRepository;

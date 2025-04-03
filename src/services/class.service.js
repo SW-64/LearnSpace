@@ -62,6 +62,19 @@ class ClassService {
 
     return newData;
   };
+
+  deleteSchedule = async (classId, scheduleId) => {
+    const existedSchedule = await this.scheduleRepository.getScheduleById(
+      classId,
+      scheduleId,
+    );
+    if (!existedSchedule) {
+      throw new NotFoundError(MESSAGES.CLASS.SCHEDULE.NOT_EXIST);
+    }
+
+    const data = await this.scheduleRepository.deleteSchedule(scheduleId);
+    return data;
+  };
 }
 
 export default ClassService;

@@ -1,4 +1,4 @@
-import { prisma } from '../utils/prisma.utils';
+import { prisma } from '../utils/prisma.utils.js';
 
 class GradeRepository {
   // 성적 생성 및 수정

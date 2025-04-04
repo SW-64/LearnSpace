@@ -1,3 +1,4 @@
+import { HTTP_STATUS } from '../constants/http-status.constant.js';
 import GradeService from '../services/grade.service.js';
 
 class GradeController {
@@ -13,7 +14,11 @@ class GradeController {
       // 시험 ID 가져오기
       const { examId } = req.params;
 
-      const data = await this.upsertGrades(classData.classId, grade, +examId);
+      const data = await this.gradeService.upsertGrades(
+        classData.classId,
+        grade,
+        +examId,
+      );
 
       return res.status(HTTP_STATUS.CREATED).json({
         status: HTTP_STATUS.CREATED,
@@ -33,7 +38,10 @@ class GradeController {
       // 파라미터에서 시험 ID 가져오기
       const { examId } = req.params;
 
-      const data = await this.deleteGrades(classData.classId, +examId);
+      const data = await this.gradeService.deleteGrades(
+        classData.classId,
+        +examId,
+      );
 
       return res.status(HTTP_STATUS.OK).json({
         status: HTTP_STATUS.OK,

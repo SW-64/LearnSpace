@@ -6,13 +6,13 @@ import GradeController from '../controllers/grade.controller.js';
 import { requireAccessToken } from '../middlewares/require-access-token.middleware.js';
 import { verifyClassMember } from '../middlewares/verify-class-member.middleware.js';
 
-const gradeRouter = express.Router();
+const gradeRouter = express.Router({ mergeParams: true });
 const gradeRepository = new GradeRepository(prisma);
 const gradeService = new GradeService(gradeRepository);
 const gradeController = new GradeController(gradeService);
 
 // 성적 생성 및 수정
-gradeController.post(
+gradeRouter.post(
   '',
   requireAccessToken('STUDENT'),
   verifyClassMember,
@@ -20,8 +20,8 @@ gradeController.post(
 );
 
 // 성적 삭제
-gradeController.delete(
-  '/:gradesId',
+gradeRouter.delete(
+  '/',
   requireAccessToken('STUDENT'),
   verifyClassMember,
   gradeController.deleteGrades,

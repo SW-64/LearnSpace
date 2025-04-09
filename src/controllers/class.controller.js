@@ -34,7 +34,7 @@ class ClassController {
       const classId = req.classData.classId;
 
       const getSchedule = await this.classService.getSchedule(classId);
-
+      console.log(typeof getSchedule, getSchedule);
       return res.status(HTTP_STATUS.CREATED).json({
         status: HTTP_STATUS.CREATED,
         message: MESSAGES.CLASS.SCHEDULE.GET,

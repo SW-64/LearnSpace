@@ -1,5 +1,5 @@
-import { NotFoundError } from '../errors/http.error.js';
 import { prisma } from '../utils/prisma.utils.js';
+import { setCache, getCache } from '../utils/caching.js';
 
 class ScheduleRepository {
   //수업 일정 생성
@@ -17,12 +17,25 @@ class ScheduleRepository {
 
   //수업 일정 전체조회
   getSchedule = async (classId) => {
-    const data = await prisma.schedule.findMany({
-      where: {
-        classId,
-      },
-    });
-    return data;
+    const cacheKey = `schedule:${classId}`; //redis 안에 저장될 키값 ex) schedule:8
+    const schedule = await getCache(cacheKey);
+    if (schedule) {
+      return schedule;
+    } else {
+      const data = await prisma.schedule.findMany({
+        where: {
+          classId,
+        },
+      });
+      setCache(cacheKey, data);
+      return data;
+    }
+    // const data = await prisma.schedule.findMany({
+    //   where: {
+    //     classId,
+    //   },
+    // });
+    // return data;
   };
 
   //수업 일정 ID로 일정 조회

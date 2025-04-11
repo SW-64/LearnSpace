@@ -56,13 +56,14 @@ class TaskRepository {
   };
 
   // 과제 제출
-  submissionsTask = async (taskId, studentAnswer) => {
+  submissionsTask = async (taskId, studentAnswer, taskImage) => {
     const data = await prisma.task.update({
       where: {
         taskId,
       },
       data: {
         studentAnswer: studentAnswer,
+        taskImage,
         submit: 'SUCCESS',
       },
     });
@@ -90,6 +91,17 @@ class TaskRepository {
       },
       data: {
         comment: null,
+      },
+    });
+    return data;
+  };
+
+  // 과제 ID로 조회
+  getTaskbyId = async (taskId) => {
+    const data = await prisma.task.findUnique({
+      where: {
+        taskId,
+        submit: 'SUCCESS',
       },
     });
     return data;

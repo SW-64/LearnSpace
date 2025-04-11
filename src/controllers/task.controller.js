@@ -104,9 +104,10 @@ class TaskController {
       const classData = req.classData;
       // 사용자로부터 제목, 설먕 값 받기
       const { studentAnswer } = req.body;
-
+      const taskImageFile = req.file ? req.file : null;
       const data = await this.taskService.submissionsTask(
         studentAnswer,
+        taskImageFile,
         +taskId,
         classData.classId,
       );

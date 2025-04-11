@@ -5,6 +5,9 @@ import TaskService from '../services/task.service.js';
 import TaskController from '../controllers/task.controller.js';
 import { requireAccessToken } from '../middlewares/require-access-token.middleware.js';
 import { verifyClassMember } from './../middlewares/verify-class-member.middleware.js';
+import multer from 'multer';
+
+const upload = multer();
 
 const taskRouter = express.Router({ mergeParams: true });
 const taskRepository = new TaskRepository(prisma);
@@ -48,6 +51,7 @@ taskRouter.post(
   '/:taskId/submissions',
   requireAccessToken('STUDENT'),
   verifyClassMember,
+  upload.single('taskImageFile'),
   taskController.submissionsTask,
 );
 

@@ -69,4 +69,21 @@ export const MESSAGES = {
       NOT_PATCH: '수정된 내용이 없습니다.',
     },
   },
+  TASK: {
+    SUCCEED: '과제 생성에 성공했습니다.',
+    GET: '과제 조회에 성공했습니다.',
+    PATCH: '과제 수정에 성공했습니다.',
+    DELETE: '과제 삭제에 성공했습니다.',
+    SUBMIT: {
+      SUCCEED: '과제 제출에 성공했습니다.',
+      NOT_EXIST: '해당하는 과제가 존재하지 않습니다.',
+      ALREADY_SUBMITTED: '이미 제출한 과제입니다.',
+    },
+    FEEDBACK: {
+      SUCCEED: '피드백 생성/수정에 성공했습니다.',
+      NOT_EXIST: '해당하는 피드백이 존재하지 않습니다.',
+      DELETE: '피드백 삭제에 성공했습니다.',
+    },
+    NOT_FOUND: '해당하는 과제가 존재하지 않습니다.',
+  },
 };

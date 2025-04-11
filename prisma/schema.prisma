@@ -88,6 +88,7 @@ model Task {
   title         String   @map("title")
   description   String   @map("description")
   studentAnswer String?  @map("student_answer")
+  taskImage     String?  @map("task_image")
   submit        Submit   @default(FAIL)
   comment       String?  @map("comment")
   createdAt     DateTime @default(now()) @map("created_at")

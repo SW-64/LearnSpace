@@ -11,6 +11,7 @@
     "dev": "nodemon src/app.js"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.782.0",
     "@prisma/client": "^6.5.0",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
@@ -19,6 +20,8 @@
     "ioredis": "^5.6.0",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.2",
+    "multer-s3": "^3.0.1",
     "nodemailer": "^6.10.0"
   },
   "devDependencies": {

@@ -8,6 +8,7 @@ import { signInValidator } from '../middlewares/validators/sign-in-validator.mid
 import { requireRefreshToken } from '../middlewares/require-refresh-token.middleware.js';
 import '../strategy/kakao.strategy.js';
 import passport from 'passport';
+import { requireAccessToken } from '../middlewares/require-access-token.middleware.js';
 
 const authRouter = express.Router();
 const authRepository = new AuthRepository(prisma);
@@ -33,15 +34,13 @@ authRouter.get(
 authRouter.get(
   '/kakao/callback',
   passport.authenticate('kakao', { session: false }),
-  (req, res) => {
-    const { user, data } = req.user;
-    console.log('user', user);
-    // 프론트 없이 테스트용 응답
-    res.status(200).json({
-      message: '카카오 로그인 성공!',
-      user: data,
-    });
-  },
+  authController.kakaoSignIn,
+);
+
+authRouter.post(
+  '/kakao/info',
+  requireAccessToken(),
+  authController.addKakaoInfo,
 );
 
 export { authRouter };

@@ -73,6 +73,37 @@ class AuthController {
       next(error);
     }
   };
+  // 카카오 로그인
+  kakaoSignIn = async (req, res, next) => {
+    try {
+      const { user } = req.user;
+      console.log('user', req.user);
+      return res.status(HTTP_STATUS.OK).json({
+        status: HTTP_STATUS.OK,
+        message: MESSAGES.AUTH.SOCIAL.KAKAKO.SUCCEED,
+        user: req.user,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+  // 카카오 로그인 추가 정보 입력
+  addKakaoInfo = async (req, res, next) => {
+    try {
+      const userId = req.user.id;
+      const { role, subject } = req.body;
+
+      const data = await this.authService.addKakaoInfo(userId, role, subject);
+
+      return res.status(HTTP_STATUS.OK).json({
+        status: HTTP_STATUS.OK,
+        message: MESSAGES.AUTH.SOCIAL.KAKAKO.MORE_INFO,
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default AuthController;

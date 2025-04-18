@@ -88,6 +88,22 @@ class AuthService {
 
     return { accessToken, refreshToken };
   };
+
+  // 카카오 로그인 시 추가 정보 입력
+  addKakaoInfo = async (userId, role, subject) => {
+    const existedInfo = await this.authRepository.findUserById(userId);
+    //이미 정보가 있는 경우
+    if (existedInfo.role) {
+      throw new ConflictError(MESSAGES.AUTH.SOCIAL.KAKAKO.ALREADY_ADDED_INFO);
+    }
+    //학생이 과목을 작성할려는 경우 에러발생
+    if (role == 'STUDENT' && subject) {
+      throw new BadRequestError(MESSAGES.AUTH.SIGN_UP.STUDENT_INVALID);
+    }
+    const data = await this.authRepository.addKakaoInfo(userId, role, subject);
+
+    return data;
+  };
 }
 
 export default AuthService;

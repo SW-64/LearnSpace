@@ -94,6 +94,32 @@ class AuthRepository {
 
     return userId;
   };
+
+  addKakaoInfo = async (userId, role, subject) => {
+    const data = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        role,
+        ...(role === 'TEACHER' && { subject }), // 선생님인 경우 과목 작성
+        ...(role === 'TEACHER' && {
+          // 선생님일 경우 teacher 테이블 생성
+          teacher: {
+            create: {
+              subject,
+            },
+          },
+        }),
+        ...(role === 'STUDENT' && {
+          // 학생일 경우 student 테이블 생성
+          student: {
+            create: {},
+          },
+        }),
+      },
+    });
+
+    return data;
+  };
 }
 
 export default AuthRepository;

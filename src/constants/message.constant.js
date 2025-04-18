@@ -51,6 +51,14 @@ export const MESSAGES = {
     TOKEN: {
       SUCCEED: '토큰 재발급에 성공했습니다.',
     },
+    SOCIAL: {
+      KAKAKO: {
+        SUCCEED: '카카오 로그인에 성공했습니다.',
+        NEED_INFO: '카카오 계정에 추가 정보가 필요합니다.',
+        MORE_INFO: '카카오 계정에 추가 정보가 입력되었습니다.',
+        ALREADY_ADDED_INFO: '이미 추가 정보가 입력되었습니다.',
+      },
+    },
   },
   EXAM: {
     SUCCEED: '시험 일정 생성에 성공했습니다.',
